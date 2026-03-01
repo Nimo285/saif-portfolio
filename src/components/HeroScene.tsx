@@ -1,6 +1,5 @@
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float } from "@react-three/drei";
 import * as THREE from "three";
 
 function GlowingSphere({ position, color, size = 0.5 }: { position: [number, number, number]; color: string; size?: number }) {
@@ -10,23 +9,22 @@ function GlowingSphere({ position, color, size = 0.5 }: { position: [number, num
     if (ref.current) {
       ref.current.rotation.x = state.clock.elapsedTime * 0.2;
       ref.current.rotation.y = state.clock.elapsedTime * 0.3;
+      ref.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.8) * 0.3;
     }
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-      <mesh ref={ref} position={position}>
-        <icosahedronGeometry args={[size, 1]} />
-        <meshStandardMaterial
-          color={color}
-          emissive={color}
-          emissiveIntensity={0.5}
-          wireframe
-          transparent
-          opacity={0.6}
-        />
-      </mesh>
-    </Float>
+    <mesh ref={ref} position={position}>
+      <icosahedronGeometry args={[size, 1]} />
+      <meshStandardMaterial
+        color={color}
+        emissive={color}
+        emissiveIntensity={0.5}
+        wireframe
+        transparent
+        opacity={0.6}
+      />
+    </mesh>
   );
 }
 
@@ -37,23 +35,22 @@ function GlowingTorus({ position, color }: { position: [number, number, number];
     if (ref.current) {
       ref.current.rotation.x = state.clock.elapsedTime * 0.15;
       ref.current.rotation.z = state.clock.elapsedTime * 0.1;
+      ref.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.6) * 0.2;
     }
   });
 
   return (
-    <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.8}>
-      <mesh ref={ref} position={position}>
-        <torusGeometry args={[0.6, 0.15, 16, 32]} />
-        <meshStandardMaterial
-          color={color}
-          emissive={color}
-          emissiveIntensity={0.4}
-          wireframe
-          transparent
-          opacity={0.4}
-        />
-      </mesh>
-    </Float>
+    <mesh ref={ref} position={position}>
+      <torusGeometry args={[0.6, 0.15, 16, 32]} />
+      <meshStandardMaterial
+        color={color}
+        emissive={color}
+        emissiveIntensity={0.4}
+        wireframe
+        transparent
+        opacity={0.4}
+      />
+    </mesh>
   );
 }
 
