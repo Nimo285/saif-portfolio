@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Orbitron", "sans-serif"],
-        body: ["Space Grotesk", "sans-serif"],
+        display: ["Syne", "sans-serif"],
+        body: ["Inter", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -91,6 +91,14 @@ export default {
           from: { transform: "rotate(0deg)" },
           to: { transform: "rotate(360deg)" },
         },
+        "reveal-up": {
+          from: { opacity: "0", transform: "translateY(60px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "line-grow": {
+          from: { scaleX: "0" },
+          to: { scaleX: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -98,6 +106,8 @@ export default {
         "float": "float 6s ease-in-out infinite",
         "pulse-glow": "pulse-glow 3s ease-in-out infinite",
         "spin-slow": "spin-slow 20s linear infinite",
+        "reveal-up": "reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        "line-grow": "line-grow 1s cubic-bezier(0.16, 1, 0.3, 1) forwards",
       },
     },
   },

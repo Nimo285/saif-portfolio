@@ -2,104 +2,85 @@ import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-function GlowingSphere({ position, color, size = 0.5 }: { position: [number, number, number]; color: string; size?: number }) {
-  const ref = useRef<THREE.Mesh>(null!);
-
+function GridPlane() {
+  const ref = useRef<THREE.GridHelper>(null!);
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.x = state.clock.elapsedTime * 0.2;
-      ref.current.rotation.y = state.clock.elapsedTime * 0.3;
-      ref.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.8) * 0.3;
+      ref.current.position.z = (state.clock.elapsedTime * 0.3) % 2;
     }
   });
+  return (
+    <gridHelper
+      ref={ref}
+      args={[40, 40, "#1a1a1a", "#111111"]}
+      rotation={[0, 0, 0]}
+      position={[0, -2, 0]}
+    />
+  );
+}
 
+function FloatingGeometry({ position, color, speed = 1 }: { position: [number, number, number]; color: string; speed?: number }) {
+  const ref = useRef<THREE.Mesh>(null!);
+  useFrame((state) => {
+    if (ref.current) {
+      ref.current.rotation.x = state.clock.elapsedTime * 0.1 * speed;
+      ref.current.rotation.y = state.clock.elapsedTime * 0.15 * speed;
+      ref.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.5 * speed) * 0.3;
+    }
+  });
   return (
     <mesh ref={ref} position={position}>
-      <icosahedronGeometry args={[size, 1]} />
+      <octahedronGeometry args={[0.4, 0]} />
       <meshStandardMaterial
         color={color}
-        emissive={color}
-        emissiveIntensity={0.5}
         wireframe
         transparent
-        opacity={0.6}
+        opacity={0.15}
       />
     </mesh>
   );
 }
 
-function GlowingTorus({ position, color }: { position: [number, number, number]; color: string }) {
-  const ref = useRef<THREE.Mesh>(null!);
-
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.x = state.clock.elapsedTime * 0.15;
-      ref.current.rotation.z = state.clock.elapsedTime * 0.1;
-      ref.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.6) * 0.2;
-    }
-  });
-
-  return (
-    <mesh ref={ref} position={position}>
-      <torusGeometry args={[0.6, 0.15, 16, 32]} />
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={0.4}
-        wireframe
-        transparent
-        opacity={0.4}
-      />
-    </mesh>
-  );
-}
-
-function Particles({ count = 200 }: { count?: number }) {
+function Particles({ count = 100 }: { count?: number }) {
   const points = useMemo(() => {
     const positions = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+      positions[i * 3] = (Math.random() - 0.5) * 16;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 16;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 16;
     }
     return positions;
   }, [count]);
 
   const ref = useRef<THREE.Points>(null!);
-
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.y = state.clock.elapsedTime * 0.02;
+      ref.current.rotation.y = state.clock.elapsedTime * 0.01;
     }
   });
 
   return (
     <points ref={ref}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          array={points}
-          count={count}
-          itemSize={3}
-        />
+        <bufferAttribute attach="attributes-position" array={points} count={count} itemSize={3} />
       </bufferGeometry>
-      <pointsMaterial size={0.02} color="#8A2BE2" transparent opacity={0.6} sizeAttenuation />
+      <pointsMaterial size={0.015} color="#333333" transparent opacity={0.8} sizeAttenuation />
     </points>
   );
 }
 
 const HeroScene = () => (
   <div className="absolute inset-0 -z-10">
-    <Canvas camera={{ position: [0, 0, 5], fov: 60 }} dpr={[1, 1.5]}>
-      <ambientLight intensity={0.2} />
-      <pointLight position={[5, 5, 5]} intensity={0.5} color="#8A2BE2" />
-      <pointLight position={[-5, -5, 5]} intensity={0.3} color="#00F5FF" />
+    <Canvas camera={{ position: [0, 1, 5], fov: 55 }} dpr={[1, 1.5]}>
+      <ambientLight intensity={0.15} />
+      <pointLight position={[5, 5, 5]} intensity={0.3} color="#ffffff" />
+      <pointLight position={[-3, 2, 4]} intensity={0.15} color="#d4a843" />
 
-      <GlowingSphere position={[-3, 1.5, -2]} color="#8A2BE2" size={0.7} />
-      <GlowingSphere position={[3, -1, -3]} color="#00F5FF" size={0.5} />
-      <GlowingSphere position={[1, 2, -4]} color="#FF4D8D" size={0.4} />
-      <GlowingTorus position={[-2, -1.5, -2]} color="#8A2BE2" />
-      <GlowingTorus position={[2.5, 1, -3]} color="#00F5FF" />
+      <FloatingGeometry position={[-3, 1.5, -3]} color="#ffffff" speed={0.8} />
+      <FloatingGeometry position={[3, -0.5, -4]} color="#d4a843" speed={1.2} />
+      <FloatingGeometry position={[1, 2.5, -5]} color="#888888" speed={0.6} />
+      <FloatingGeometry position={[-1.5, -1, -2]} color="#d4a843" speed={1} />
+      <GridPlane />
       <Particles />
     </Canvas>
   </div>

@@ -4,7 +4,20 @@ import HeroScene from "@/components/HeroScene";
 import ServiceCard from "@/components/ServiceCard";
 import ProjectCard from "@/components/ProjectCard";
 import { services, projects, testimonials } from "@/data/projects";
-import { ArrowRight, Quote } from "lucide-react";
+import { ArrowRight, Quote, Minus } from "lucide-react";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
+
+const stagger = {
+  visible: { transition: { staggerChildren: 0.1 } },
+};
 
 const Index = () => {
   return (
@@ -12,44 +25,50 @@ const Index = () => {
       {/* Hero */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <HeroScene />
-        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: "4rem" }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="h-px bg-accent mx-auto mb-8"
+          />
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="font-display text-xs uppercase tracking-[0.3em] text-neon-cyan mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="font-body text-xs uppercase tracking-[0.4em] text-muted-foreground mb-8"
           >
-            Freelance Designer · Developer · Marketer
+            Design · Development · Strategy
           </motion.p>
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-6"
+            transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="text-5xl md:text-7xl lg:text-8xl font-display font-extrabold leading-[0.95] mb-8 tracking-tight"
           >
-            Designing Digital{" "}
+            Building Digital{" "}
             <span className="gradient-text">Experiences</span>{" "}
-            That Convert
+            That Matter
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
+            className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto mb-12 font-light"
           >
-            Creative Designer & Developer Building Modern Brands
+            Creative designer & developer crafting modern brands and high-performance digital products.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            transition={{ duration: 0.8, delay: 1.1 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Link to="/work" className="neon-button text-foreground">
-              View My Work
+            <Link to="/work" className="neon-button">
+              View Work
             </Link>
             <Link to="/contact" className="neon-button-cyan">
-              Hire Me
+              Get in Touch
             </Link>
           </motion.div>
         </div>
@@ -58,34 +77,36 @@ const Index = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          transition={{ delay: 2 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2"
         >
           <motion.div
             animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="w-5 h-8 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-1"
-          >
-            <div className="w-1 h-2 rounded-full bg-neon-cyan" />
-          </motion.div>
+            transition={{ repeat: Infinity, duration: 2.5 }}
+            className="w-px h-12 bg-gradient-to-b from-transparent via-muted-foreground/40 to-transparent"
+          />
         </motion.div>
       </section>
 
       {/* Services */}
       <section className="section-padding">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={stagger}
+            className="mb-20"
           >
-            <p className="font-display text-xs uppercase tracking-[0.3em] text-neon-purple mb-4">What I Do</p>
-            <h2 className="text-3xl md:text-5xl font-display font-bold">
-              Services & <span className="gradient-text">Expertise</span>
-            </h2>
+            <motion.div variants={fadeUp} custom={0} className="flex items-center gap-4 mb-4">
+              <Minus className="text-accent" size={20} />
+              <p className="font-body text-xs uppercase tracking-[0.3em] text-accent">Services</p>
+            </motion.div>
+            <motion.h2 variants={fadeUp} custom={1} className="text-3xl md:text-5xl font-display font-bold">
+              What I Do
+            </motion.h2>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {services.map((s, i) => (
               <ServiceCard key={s.title} {...s} index={i} />
             ))}
@@ -94,28 +115,34 @@ const Index = () => {
       </section>
 
       {/* Featured Projects */}
-      <section className="section-padding bg-card/30">
-        <div className="max-w-7xl mx-auto">
+      <section className="section-padding">
+        <div className="max-w-6xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex items-end justify-between mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={stagger}
+            className="flex items-end justify-between mb-20"
           >
             <div>
-              <p className="font-display text-xs uppercase tracking-[0.3em] text-neon-purple mb-4">Portfolio</p>
-              <h2 className="text-3xl md:text-5xl font-display font-bold">
-                Featured <span className="gradient-text">Projects</span>
-              </h2>
+              <motion.div variants={fadeUp} custom={0} className="flex items-center gap-4 mb-4">
+                <Minus className="text-accent" size={20} />
+                <p className="font-body text-xs uppercase tracking-[0.3em] text-accent">Portfolio</p>
+              </motion.div>
+              <motion.h2 variants={fadeUp} custom={1} className="text-3xl md:text-5xl font-display font-bold">
+                Selected Work
+              </motion.h2>
             </div>
-            <Link
-              to="/work"
-              className="hidden md:flex items-center gap-2 text-neon-cyan font-display text-sm uppercase tracking-wider hover:gap-4 transition-all"
-            >
-              View All <ArrowRight size={16} />
-            </Link>
+            <motion.div variants={fadeUp} custom={2}>
+              <Link
+                to="/work"
+                className="hidden md:flex items-center gap-3 text-muted-foreground font-body text-sm uppercase tracking-wider hover:text-accent transition-colors duration-300"
+              >
+                All Projects <ArrowRight size={14} />
+              </Link>
+            </motion.div>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {projects.slice(0, 3).map((p, i) => (
               <ProjectCard key={p.slug} project={p} index={i} />
             ))}
@@ -124,33 +151,37 @@ const Index = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="section-padding">
-        <div className="max-w-7xl mx-auto">
+      <section className="section-padding border-t border-border">
+        <div className="max-w-6xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={stagger}
+            className="mb-20"
           >
-            <p className="font-display text-xs uppercase tracking-[0.3em] text-neon-purple mb-4">Testimonials</p>
-            <h2 className="text-3xl md:text-5xl font-display font-bold">
-              Client <span className="gradient-text">Feedback</span>
-            </h2>
+            <motion.div variants={fadeUp} custom={0} className="flex items-center gap-4 mb-4">
+              <Minus className="text-accent" size={20} />
+              <p className="font-body text-xs uppercase tracking-[0.3em] text-accent">Testimonials</p>
+            </motion.div>
+            <motion.h2 variants={fadeUp} custom={1} className="text-3xl md:text-5xl font-display font-bold">
+              Client Words
+            </motion.h2>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {testimonials.map((t, i) => (
               <motion.div
                 key={t.name}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="glass-hover p-8"
+                transition={{ delay: i * 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="glass-hover p-8 group"
               >
-                <Quote className="text-neon-purple/40 mb-4" size={32} />
-                <p className="text-muted-foreground text-sm leading-relaxed mb-6">{t.text}</p>
+                <Quote className="text-accent/30 mb-6" size={28} />
+                <p className="text-muted-foreground text-sm leading-relaxed mb-8">{t.text}</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-neon-purple/20 flex items-center justify-center font-display text-xs text-neon-purple">
+                  <div className="w-9 h-9 rounded-full bg-accent/10 flex items-center justify-center font-display text-xs text-accent font-bold">
                     {t.avatar}
                   </div>
                   <div>
@@ -167,18 +198,20 @@ const Index = () => {
       {/* CTA */}
       <section className="section-padding">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-4xl mx-auto glass p-12 md:p-16 text-center gradient-border rounded-2xl"
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-3xl mx-auto text-center"
         >
-          <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
-            Let's Build Something <span className="gradient-text">Amazing</span>
+          <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 leading-tight">
+            Let's Create Something{" "}
+            <span className="gradient-text">Exceptional</span>
           </h2>
-          <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-            Ready to transform your digital presence? Let's collaborate and create something extraordinary.
+          <p className="text-muted-foreground mb-10 max-w-md mx-auto font-light">
+            Ready to elevate your digital presence? Let's collaborate on your next project.
           </p>
-          <Link to="/contact" className="neon-button text-foreground inline-block">
+          <Link to="/contact" className="neon-button inline-block">
             Start a Project
           </Link>
         </motion.div>
