@@ -7,8 +7,8 @@ const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
         <div>
           <h3 className="font-display font-bold text-lg mb-4 tracking-tight">
-            <span className="text-foreground">CODIFY</span>
-            <span className="text-accent ml-1">X</span>
+            <span className="text-foreground">DEZI</span>
+            <span className="text-accent ml-0.5">VO</span>
           </h3>
           <p className="text-muted-foreground text-sm leading-relaxed max-w-xs font-light">
             Designing digital experiences that convert. Creative design, development, and marketing solutions.
@@ -43,13 +43,13 @@ const Footer = () => (
               </a>
             ))}
           </div>
-          <p className="text-muted-foreground text-sm mt-4 font-light">saif@codifyx.com</p>
+          <p className="text-muted-foreground text-sm mt-4 font-light">saif@dezivo.com</p>
         </div>
       </div>
 
       <div className="border-t border-border mt-12 pt-8 text-center">
         <p className="text-muted-foreground text-xs font-light">
-          © 2026 Codify X. All rights reserved.
+          © 2026 Dezivo. All rights reserved.
         </p>
       </div>
     </div>
