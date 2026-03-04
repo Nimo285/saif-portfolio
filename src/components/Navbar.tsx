@@ -23,8 +23,8 @@ const Navbar = () => {
     >
       <div className="max-w-6xl mx-auto px-6 md:px-12 flex items-center justify-between h-16">
         <Link to="/" className="font-display font-bold text-lg tracking-tight">
-          <span className="text-foreground">CODIFY</span>
-          <span className="text-accent ml-1">X</span>
+          <span className="text-foreground">DEZI</span>
+          <span className="text-accent ml-0.5">VO</span>
         </Link>
 
         {/* Desktop */}
