@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import cursorIcon from "@/assets/cursor-icon.png";
 
 const CustomCursor = () => {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -11,7 +12,7 @@ const CustomCursor = () => {
     const move = (e: MouseEvent) => {
       pos.current = { x: e.clientX, y: e.clientY };
       if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+        dotRef.current.style.transform = `translate(${e.clientX - 12}px, ${e.clientY - 12}px)`;
       }
     };
 
@@ -30,7 +31,6 @@ const CustomCursor = () => {
       ringRef.current?.classList.add("opacity-30");
     };
 
-    // Smooth ring follow with RAF
     let raf: number;
     const animate = () => {
       ringPos.current.x += (pos.current.x - ringPos.current.x) * 0.15;
@@ -58,9 +58,11 @@ const CustomCursor = () => {
 
   return (
     <>
-      <div
-        ref={dotRef}
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-foreground z-[9999] pointer-events-none mix-blend-difference"
+      <img
+        ref={dotRef as any}
+        src={cursorIcon}
+        alt=""
+        className="fixed top-0 left-0 w-6 h-6 z-[9999] pointer-events-none"
         style={{ willChange: "transform" }}
       />
       <div
