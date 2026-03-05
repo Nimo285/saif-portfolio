@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import cursorIcon from "@/assets/cursor-icon.png";
 
 const CustomCursor = () => {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -12,7 +11,7 @@ const CustomCursor = () => {
     const move = (e: MouseEvent) => {
       pos.current = { x: e.clientX, y: e.clientY };
       if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${e.clientX - 12}px, ${e.clientY - 12}px)`;
+        dotRef.current.style.transform = `translate(${e.clientX - 5}px, ${e.clientY - 5}px)`;
       }
     };
 
@@ -20,26 +19,25 @@ const CustomCursor = () => {
       const t = e.target as HTMLElement;
       if (t.closest("a, button, [role='button'], input, textarea, .cursor-pointer")) {
         hovering.current = true;
-        ringRef.current?.classList.add("scale-150", "opacity-80");
-        ringRef.current?.classList.remove("opacity-30");
+        if (dotRef.current) dotRef.current.classList.add("scale-[0.6]");
+        ringRef.current?.classList.add("scale-[1.8]", "border-primary/80");
+        ringRef.current?.classList.remove("border-foreground/20");
       }
     };
 
     const out = () => {
       hovering.current = false;
-      ringRef.current?.classList.remove("scale-150", "opacity-80");
-      ringRef.current?.classList.add("opacity-30");
+      if (dotRef.current) dotRef.current.classList.remove("scale-[0.6]");
+      ringRef.current?.classList.remove("scale-[1.8]", "border-primary/80");
+      ringRef.current?.classList.add("border-foreground/20");
     };
 
     let raf: number;
     const animate = () => {
-      ringPos.current.x += (pos.current.x - ringPos.current.x) * 0.15;
-      ringPos.current.y += (pos.current.y - ringPos.current.y) * 0.15;
+      ringPos.current.x += (pos.current.x - ringPos.current.x) * 0.12;
+      ringPos.current.y += (pos.current.y - ringPos.current.y) * 0.12;
       if (ringRef.current) {
-        const size = hovering.current ? 44 : 28;
-        ringRef.current.style.transform = `translate(${ringPos.current.x - size / 2}px, ${ringPos.current.y - size / 2}px)`;
-        ringRef.current.style.width = `${size}px`;
-        ringRef.current.style.height = `${size}px`;
+        ringRef.current.style.transform = `translate(${ringPos.current.x - 20}px, ${ringPos.current.y - 20}px)`;
       }
       raf = requestAnimationFrame(animate);
     };
@@ -58,16 +56,16 @@ const CustomCursor = () => {
 
   return (
     <>
-      <img
-        ref={dotRef as any}
-        src={cursorIcon}
-        alt=""
-        className="fixed top-0 left-0 w-6 h-6 z-[9999] pointer-events-none"
-        style={{ willChange: "transform" }}
+      {/* Inner dot — gold accent */}
+      <div
+        ref={dotRef}
+        className="fixed top-0 left-0 w-[10px] h-[10px] rounded-full bg-primary z-[9999] pointer-events-none transition-transform duration-200"
+        style={{ willChange: "transform", boxShadow: "0 0 8px hsl(var(--primary) / 0.6)" }}
       />
+      {/* Outer ring — subtle, elegant */}
       <div
         ref={ringRef}
-        className="fixed top-0 left-0 rounded-full border border-foreground/50 opacity-30 z-[9999] pointer-events-none transition-[width,height,opacity] duration-200"
+        className="fixed top-0 left-0 w-10 h-10 rounded-full border border-foreground/20 z-[9999] pointer-events-none transition-all duration-300 ease-out"
         style={{ willChange: "transform" }}
       />
     </>
